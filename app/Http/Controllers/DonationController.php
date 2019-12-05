@@ -30,6 +30,7 @@ class DonationController extends Controller
 
         // Set midtrans configuration
         Veritrans_Config::$serverKey = config('services.midtrans.serverKey');
+        Veritrans_Config::$clientKey = config('services.midtrans.clientKey');
         Veritrans_Config::$isProduction = config('services.midtrans.isProduction');
         Veritrans_Config::$isSanitized = config('services.midtrans.isSanitized');
         Veritrans_Config::$is3ds = config('services.midtrans.is3ds');
