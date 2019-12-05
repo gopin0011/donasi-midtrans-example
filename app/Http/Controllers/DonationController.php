@@ -7,6 +7,7 @@ use App\Model\Donation;
 use Veritrans_Config;
 use Veritrans_Snap;
 use Veritrans_Notification;
+use Veritrans_Transaction;
 
 class DonationController extends Controller
 {
@@ -30,7 +31,6 @@ class DonationController extends Controller
 
         // Set midtrans configuration
         Veritrans_Config::$serverKey = config('services.midtrans.serverKey');
-        Veritrans_Config::$clientKey = config('services.midtrans.clientKey');
         Veritrans_Config::$isProduction = config('services.midtrans.isProduction');
         Veritrans_Config::$isSanitized = config('services.midtrans.isSanitized');
         Veritrans_Config::$is3ds = config('services.midtrans.is3ds');
@@ -181,5 +181,11 @@ class DonationController extends Controller
         });
 
         return;
+    }
+
+    public function statusTransaction()
+    {
+      $status = Veritrans_Transaction::status(13);
+      dump($status);
     }
 }

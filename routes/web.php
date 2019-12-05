@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'DonationController@index')->name('welcome');
+Route::get('/status', 'DonationController@statusTransaction')->name('status');
 Route::post('/finish', function(){
     return redirect()->route('welcome');
 })->name('donation.finish');
