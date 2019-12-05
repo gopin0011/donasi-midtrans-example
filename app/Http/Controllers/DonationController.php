@@ -8,6 +8,7 @@ use Veritrans_Config;
 use Veritrans_Snap;
 use Veritrans_Notification;
 use Veritrans_Transaction;
+use Mail;
 
 class DonationController extends Controller
 {
@@ -103,6 +104,9 @@ class DonationController extends Controller
             $donation->snap_token = $snapToken;
             $donation->save();
 
+            // Kirim email
+            $this->sendEmail($this->request);
+
             // Beri response snap token
             $this->response['snap_token'] = $snapToken;
         });
@@ -187,5 +191,22 @@ class DonationController extends Controller
     {
       $status = Veritrans_Transaction::status(13);
       dump($status);
+    }
+
+    public function sendEmail($request)
+    {
+        try{
+            Mail::send('email', ['nama' => $request->donor_name, 'pesan' => '$request->pesan'], function ($message) use ($request)
+            {
+                $message->subject('Donasi anda sangat berarti');
+                $message->from('donotreply@kiddy.com', 'Kiddy');
+                $message->to($request->donor_email);
+            });
+            // return back()->with('alert-success','Berhasil Kirim Email');
+            return response (['status' => true]);
+        }
+        catch (Exception $e){
+            return response (['status' => false,'errors' => $e->getMessage()]);
+        }
     }
 }
