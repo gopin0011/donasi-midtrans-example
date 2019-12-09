@@ -19,6 +19,18 @@
         height: 100vh;
         margin: 0;
     }
+
+    #loader {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        background: rgba(0,0,0,0.75) url("/images/loading2.gif") no-repeat center center;
+        z-index: 10000;
+    }
     </style>
 </head>
 
@@ -163,6 +175,7 @@
         </table>
 
     </div>
+    <div id="loader"></div>
     <script
         src="https://code.jquery.com/jquery-3.3.1.min.js"
         integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
@@ -170,6 +183,8 @@
     <script src="{{ !config('services.midtrans.isProduction') ? 'https://app.sandbox.midtrans.com/snap/snap.js' : 'https://app.midtrans.com/snap/snap.js' }}" data-client-key="{{ config('services.midtrans.clientKey') }}"></script>
     <script>
     function submitForm() {
+        var spinner = $('#loader');
+        spinner.show();
         $.post("{{ route('donation.store') }}",
         {
             _method: 'POST',
@@ -199,6 +214,9 @@
                     }
                 });
             }
+        })
+        .done(function(resp) {
+            spinner.hide();
         });
         return false;
     }
